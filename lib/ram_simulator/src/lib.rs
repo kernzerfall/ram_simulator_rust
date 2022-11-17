@@ -1,27 +1,30 @@
+use instruction::InstructionVec;
+
 pub mod state;
 pub mod program;
+pub mod instruction;
 
 pub struct RegisterMachine {
     machine_state: state::State,
-    program: Vec<program::Instruction>,
+    program: InstructionVec,
 }
 
 #[allow(dead_code)]
 impl RegisterMachine {
-    pub fn new(prog: Vec<program::Instruction>) -> RegisterMachine {
+    pub fn new(isv: InstructionVec) -> RegisterMachine {
         RegisterMachine {
             machine_state: state::State::initial(),
-            program: prog,
+            program: isv,
         }
     }
 
-    pub fn load_program(&mut self, program: Vec<program::Instruction>) {
-        self.program = program;
+    pub fn load_program(&mut self, isv: InstructionVec) {
+        self.program = isv;
     }
 
-    pub fn push(&mut self, args: Vec<u128>){
-        for (i, &arg) in args.iter().enumerate() {
-            self.machine_state.set_reg(i+1, arg)
+    pub fn push_vec(&mut self, vec: Vec<u128>) {
+        for (i, &v) in vec.iter().enumerate() {
+            self.machine_state.set_reg(i+1, v);
         }
     }
 
@@ -31,8 +34,14 @@ impl RegisterMachine {
         self.machine_state.print_registers();
         println!("\x1b[0m");
         while self.machine_state.is_running() {
-            let instruction = &self.program[self.machine_state.get_pc() as usize];
-            instruction.exec(&mut self.machine_state);
-        }
+            let pc = self.machine_state.get_pc();
+
+            print!("Step {:2} -- PC: {:2}, ", self.machine_state.get_steps(), self.machine_state.get_pc());
+            self.machine_state.print_registers();
+            println!();
+
+            self.program.exec_instruction(pc, &mut self.machine_state);
+            self.machine_state.inc_steps();
+        }    
     } 
 }
