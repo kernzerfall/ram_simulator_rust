@@ -44,6 +44,6 @@ impl StringRepr for CondJmp {
             Comparison::Lt => "<",
         }.to_string();
 
-        format!("IF c(0){}{} GOTO {}", "<", comp, self.jmp_address)
+        format!("IF c(0){}{} GOTO {}", comp, self.value, self.jmp_address)
     }
 }
