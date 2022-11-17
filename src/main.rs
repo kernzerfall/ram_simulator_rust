@@ -1,5 +1,6 @@
 use ram_simulator::*;
 use ram_simulator::instruction::*;
+use comparison::Comparison;
 
 
 
@@ -9,7 +10,7 @@ fn main() {
         CLoad::new(1),
         Store::new(3),
         Load::new(2),
-        CondJmp::new(program::Comparison::Eq, 0, 10),
+        CondJmp::new(Comparison::Eq, 0, 10),
         CSub::new(1),
         Store::new(2),
         Load::new(3),

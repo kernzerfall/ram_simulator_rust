@@ -1,4 +1,4 @@
-use crate::program::Comparison;
+use crate::comparison::Comparison;
 use crate::state::{State};
 
 pub struct InstructionVec {

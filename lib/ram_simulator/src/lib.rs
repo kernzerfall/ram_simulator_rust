@@ -1,7 +1,7 @@
 use instruction::InstructionVec;
 
 pub mod state;
-pub mod program;
+pub mod comparison;
 pub mod instruction;
 
 pub struct RegisterMachine {

@@ -2,7 +2,7 @@ use super::Instruction;
 use super::StringRepr;
 use super::{Jmp, CondJmp};
 
-use crate::program::Comparison;
+use crate::comparison::Comparison;
 use crate::state::State;
 
 impl Instruction for Jmp {
