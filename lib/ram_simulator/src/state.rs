@@ -105,4 +105,13 @@ impl State {
         }
         print!("\x08\x08\x20");
     }
+
+    /// Resets the machine's state to the initial one
+    pub fn reset(&mut self) {
+        self.pc = 0;
+        self.registers = [0; 1024];
+        self.highest_register = 0;
+        self.running = false;
+        self.steps = 0;
+    }
 }
