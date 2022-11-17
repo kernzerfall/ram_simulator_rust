@@ -9,7 +9,6 @@ pub struct RegisterMachine {
     program: InstructionVec,
 }
 
-#[allow(dead_code)]
 impl RegisterMachine {
     pub fn new(isv: InstructionVec) -> RegisterMachine {
         RegisterMachine {
