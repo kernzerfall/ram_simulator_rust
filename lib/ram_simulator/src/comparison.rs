@@ -1,5 +1,7 @@
 #[derive(Debug)]
 #[allow(dead_code)]
+
+/// Partial order comparisons
 pub enum Comparison {
     Eq,
     Lt,
@@ -9,6 +11,7 @@ pub enum Comparison {
 }
 
 impl Comparison {
+    // Compares `a` und `b`
     pub fn compare<T: PartialOrd>(&self, a: T, b: T) -> bool {
         match self {
             Comparison::Eq => a == b,
