@@ -1,52 +1,53 @@
-use register_machine;
+use register_machine::{RegisterMachine};
+use register_machine::program::{Instruction, InstructionType, Comparison};
 
 fn main() {
-    let mut insts: Vec<register_machine::program::Instruction> = Vec::new();
-    insts.push(register_machine::program::Instruction::new_single(
-        register_machine::program::InstructionType::CLoad,
+    let mut insts: Vec<Instruction> = Vec::new();
+    insts.push(Instruction::new_single(
+        InstructionType::CLoad,
         1,
     ));
-    insts.push(register_machine::program::Instruction::new_single(
-        register_machine::program::InstructionType::Store,
+    insts.push(Instruction::new_single(
+        InstructionType::Store,
         3,
     ));
-    insts.push(register_machine::program::Instruction::new_single(
-        register_machine::program::InstructionType::Load,
+    insts.push(Instruction::new_single(
+        InstructionType::Load,
         2,
     ));
-    insts.push(register_machine::program::Instruction::new_triple(
-        register_machine::program::InstructionType::CondJmp,
+    insts.push(Instruction::new_triple(
+        InstructionType::CondJmp,
         0,
-        register_machine::program::Comparison::Eq,
+        Comparison::Eq,
         10,
     ));
-    insts.push(register_machine::program::Instruction::new_single(
-        register_machine::program::InstructionType::CSub,
+    insts.push(Instruction::new_single(
+        InstructionType::CSub,
         1,
     ));
-    insts.push(register_machine::program::Instruction::new_single(
-        register_machine::program::InstructionType::Store,
+    insts.push(Instruction::new_single(
+        InstructionType::Store,
         2,
     ));
-    insts.push(register_machine::program::Instruction::new_single(
-        register_machine::program::InstructionType::Load,
+    insts.push(Instruction::new_single(
+        InstructionType::Load,
         3,
     ));
-    insts.push(register_machine::program::Instruction::new_single(
-        register_machine::program::InstructionType::Mult,
+    insts.push(Instruction::new_single(
+        InstructionType::Mult,
         1,
     ));
-    insts.push(register_machine::program::Instruction::new_single(
-        register_machine::program::InstructionType::Store,
+    insts.push(Instruction::new_single(
+        InstructionType::Store,
         3,
     ));
-    insts.push(register_machine::program::Instruction::new_single(
-        register_machine::program::InstructionType::Jmp,
+    insts.push(Instruction::new_single(
+        InstructionType::Jmp,
         2,
     ));
-    insts.push(register_machine::program::Instruction::end());
+    insts.push(Instruction::end());
 
-    let mut machine = register_machine::RegisterMachine::new(insts);
+    let mut machine = RegisterMachine::new(insts);
 
     machine.push(vec![2,3]);
     machine.run();
