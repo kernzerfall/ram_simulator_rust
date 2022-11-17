@@ -1,24 +1,53 @@
+use register_machine;
+
 fn main() {
-    println!("Hello, world!");
-    foo_bar_printer();
-}
+    let mut insts: Vec<register_machine::program::Instruction> = Vec::new();
+    insts.push(register_machine::program::Instruction::new_single(
+        register_machine::program::InstructionType::CLoad,
+        1,
+    ));
+    insts.push(register_machine::program::Instruction::new_single(
+        register_machine::program::InstructionType::Store,
+        3,
+    ));
+    insts.push(register_machine::program::Instruction::new_single(
+        register_machine::program::InstructionType::Load,
+        2,
+    ));
+    insts.push(register_machine::program::Instruction::new_triple(
+        register_machine::program::InstructionType::CondJmp,
+        0,
+        register_machine::program::Comparison::Eq,
+        10,
+    ));
+    insts.push(register_machine::program::Instruction::new_single(
+        register_machine::program::InstructionType::CSub,
+        1,
+    ));
+    insts.push(register_machine::program::Instruction::new_single(
+        register_machine::program::InstructionType::Store,
+        2,
+    ));
+    insts.push(register_machine::program::Instruction::new_single(
+        register_machine::program::InstructionType::Load,
+        3,
+    ));
+    insts.push(register_machine::program::Instruction::new_single(
+        register_machine::program::InstructionType::Mult,
+        1,
+    ));
+    insts.push(register_machine::program::Instruction::new_single(
+        register_machine::program::InstructionType::Store,
+        3,
+    ));
+    insts.push(register_machine::program::Instruction::new_single(
+        register_machine::program::InstructionType::Jmp,
+        2,
+    ));
+    insts.push(register_machine::program::Instruction::end());
 
-fn foo_bar_printer() { 
-    for i in 0..100 {
-//        print!("{}",i);
-        let mut printed: bool = false;
-        if i % 3 == 0 {
-            print!("foo");
-            printed = true;
-        }
+    let mut machine = register_machine::RegisterMachine::new(insts);
 
-        if i % 5 == 0 {
-            print!("bar");
-            printed = true;
-        }
-        
-        if printed {
-            println!();
-        }
-    }
+    machine.push(vec![2,3]);
+    machine.run();
 }
