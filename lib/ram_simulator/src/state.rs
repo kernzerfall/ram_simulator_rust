@@ -14,7 +14,6 @@ pub struct State {
 }
 
 /// Methods for the State struct.
-#[allow(dead_code)]
 impl State {
     /// Creates an empty (new) state.
     pub fn initial() -> State {
