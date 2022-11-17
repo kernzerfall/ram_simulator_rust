@@ -22,7 +22,6 @@ macro_rules! make_single_operand_instruction {
                 operand: $argtype,
             }
 
-            #[allow(dead_code)]
             impl $name {
                 pub fn operand(&self) -> usize {
                     self.operand as usize
