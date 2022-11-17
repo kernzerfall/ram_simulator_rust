@@ -32,15 +32,17 @@ impl RegisterMachine {
         print!("\x1b[33mInitial Configuration -- ");
         self.machine_state.print_registers();
         println!("\x1b[0m");
+
         while self.machine_state.is_running() {
             let pc = self.machine_state.get_pc();
 
             print!("Step {:2} -- PC: {:2}, ", self.machine_state.get_steps(), self.machine_state.get_pc());
-            self.machine_state.print_registers();
-            println!();
-
+            
             self.program.exec_instruction(pc, &mut self.machine_state);
             self.machine_state.inc_steps();
-        }    
+            
+            self.machine_state.print_registers();
+            println!();
+        }
     } 
 }
