@@ -2,8 +2,6 @@ use ram_simulator::*;
 use ram_simulator::instruction::*;
 use comparison::Comparison;
 
-
-
 fn main() {
     let mut isl = InstructionVec::new();
     ivec_push_multiple!(isl, 
