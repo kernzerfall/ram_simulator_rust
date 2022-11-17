@@ -22,6 +22,7 @@ impl RegisterMachine {
     }
 
     pub fn load_program(&mut self, isv: InstructionVec) {
+        self.reset();
         self.program = isv;
     }
 
