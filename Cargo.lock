@@ -3,17 +3,17 @@
 version = 3
 
 [[package]]
-name = "ram_text_parser"
+name = "ram_simulator"
 version = "0.1.0"
 
 [[package]]
-name = "register_machine"
-version = "0.1.0"
-
-[[package]]
-name = "rustest"
+name = "ram_simulator_rt"
 version = "0.1.0"
 dependencies = [
+ "ram_simulator",
  "ram_text_parser",
- "register_machine",
 ]
+
+[[package]]
+name = "ram_text_parser"
+version = "0.1.0"

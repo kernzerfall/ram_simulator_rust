@@ -1,5 +1,5 @@
 [package]
-name = "register_machine"
+name = "ram_simulator"
 version = "0.1.0"
 edition = "2021"
 

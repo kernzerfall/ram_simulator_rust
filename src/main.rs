@@ -1,5 +1,5 @@
-use register_machine::{RegisterMachine};
-use register_machine::program::{Instruction, InstructionType, Comparison};
+use ram_simulator::{RegisterMachine};
+use ram_simulator::program::{Instruction, InstructionType, Comparison};
 
 fn main() {
     let mut insts: Vec<Instruction> = Vec::new();
