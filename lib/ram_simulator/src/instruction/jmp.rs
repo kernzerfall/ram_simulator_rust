@@ -7,7 +7,7 @@ use crate::state::State;
 
 impl Instruction for Jmp {
     fn exec(&self, state: &mut State) {
-        state.set_pc(self.operand);
+        state.set_pc(self.operand - 1);
     }
 }
 
@@ -15,7 +15,7 @@ impl Instruction for CondJmp {
     fn exec(&self, state: &mut State) {
         let acc = state.get_acc();
         if self.comparison.compare(acc, self.value) {
-            state.set_pc(self.jmp_address);
+            state.set_pc(self.jmp_address - 1);
         } else {
             state.inc_pc();
         }
@@ -44,6 +44,6 @@ impl StringRepr for CondJmp {
             Comparison::Lt => "<",
         }.to_string();
 
-        format!("IF c(0){}{} THEN GOTO {}", comp, self.value, self.jmp_address + 1)
+        format!("IF c(0){}{} THEN GOTO {}", comp, self.value, self.jmp_address)
     }
 }
