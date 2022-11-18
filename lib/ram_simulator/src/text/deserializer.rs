@@ -169,3 +169,5 @@ impl Deserializer {
         res.push_vec(initial_state);
         Ok(res)
     }
+}
+
