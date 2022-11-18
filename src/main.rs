@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use ram_simulator::*;
 use ram_simulator::instruction::*;
 use comparison::Comparison;
@@ -47,4 +49,12 @@ fn main() {
     ram.load_program(isl2);
     ram.push_vec(vec![16385]);
     ram.run();
+
+    let mut another_ram = text::Deserializer::parse_file(Path::new("ram.asm").to_path_buf())
+        .expect("File should contain a valid assembly program");
+    another_ram.run();
+
+    // let ser = Serializer::to_string(another_ram);
+    // Serializer::dump(another_ram);
+    // Serializer::dump(ram);
 }
