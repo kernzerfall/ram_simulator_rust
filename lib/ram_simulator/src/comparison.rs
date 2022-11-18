@@ -21,4 +21,15 @@ impl Comparison {
             Comparison::Ge => a >= b,
         }
     }
+
+    pub fn str_to_comp(str: &str) -> Comparison {
+        match str.trim() {
+            "="  => Comparison::Eq,
+            "<"  => Comparison::Lt,
+            "<=" => Comparison::Le,
+            ">"  => Comparison::Gt,
+            ">=" => Comparison::Ge,
+            _ => Comparison::Eq // Should never occur
+        }
+    }
 }
