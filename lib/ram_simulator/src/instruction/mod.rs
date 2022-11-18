@@ -132,6 +132,7 @@ impl InstructionVec {
         self.instructions.get(index).unwrap()
     }
 
+    /// Empty InstructionVec constructor
     pub fn new() -> InstructionVec {
         InstructionVec { instructions: Vec::new() }
     }
