@@ -22,7 +22,7 @@ pub trait StringRepr {
 macro_rules! make_single_operand_instruction {
     ( $( $name:ident, $argtype:ident ), * ) => {
         $(
-            #[derive(Debug)]
+            #[derive(Debug, Clone, Copy)]
             pub struct $name {
                 operand: $argtype,
             }
