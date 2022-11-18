@@ -2,11 +2,16 @@
 name = "ram_simulator_rt"
 version = "0.1.0"
 edition = "2021"
+default-run = "rscli"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 ram_simulator = { path = "lib/ram_simulator" }
+
+[[bin]]
+name = "rscli"
+path = "src/rscli/rscli.rs"
 
 [[bin]]
 name = "example1"
