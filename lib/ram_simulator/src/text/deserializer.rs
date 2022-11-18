@@ -20,7 +20,7 @@ macro_rules! gen_single_arg_instr {
     ($instr:ident, $argtype:ident, $tkarr:expr, $line:expr) => {
         $instr::new(
             $tkarr.next()
-                .expect(format!("Line {}: {} needs an argument", $line+1, stringify!($instr)).as_str())
+                .expect(format!("Line {}: {} needs an argument", $line, stringify!($instr)).as_str())
                 .parse::<$argtype>()
                 .unwrap()
         )
@@ -45,7 +45,7 @@ impl Deserializer {
             
             
             let instruction = tokens.next()
-                .expect(format!("Expected an instruction on line {}", i+1).as_str())
+                .expect(format!("Expected an instruction on line {}", i).as_str())
                 .trim();
 
             match instruction.trim().to_uppercase().as_str() {
@@ -139,14 +139,14 @@ impl Deserializer {
 
                 "IF" => {
                     let tokens = COND_JMP_PARSER.captures(&uw).expect(
-                        format!("Line {}: IF statement invalid", i+1).as_str()
+                        format!("Line {}: IF statement invalid", i).as_str()
                     );
                     let comp = Comparison::str_to_comp(&tokens[1]);
                     let value = tokens[2].parse::<u128>().expect(
-                        format!("Line {}: IF condition must have an integer value", i+1).as_str()
+                        format!("Line {}: IF condition must have an integer value", i).as_str()
                     );
                     let addr = tokens[3].parse::<usize>().expect(
-                        format!("Line {}: IF condition must have an integer goto address", i+1).as_str()
+                        format!("Line {}: IF condition must have an integer goto address", i).as_str()
                     );
 
                     isv.push_instruction(
@@ -154,7 +154,7 @@ impl Deserializer {
                     )
                 }
 
-                _ => panic!("Line {}: Unknown instruction {}", i+1, instruction),
+                _ => panic!("Line {}: Unknown instruction {}", i, instruction),
             };
         }
 
