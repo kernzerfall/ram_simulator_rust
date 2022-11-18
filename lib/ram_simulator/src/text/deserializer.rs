@@ -154,7 +154,7 @@ impl Deserializer {
                     )
                 }
 
-                _ => todo!("impl {}", instruction),
+                _ => panic!("Line {}: Unknown instruction {}", i+1, instruction),
             };
         }
 
