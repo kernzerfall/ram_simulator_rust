@@ -7,4 +7,3 @@ edition = "2021"
 
 [dependencies]
 ram_simulator = { path = "lib/ram_simulator" }
-ram_text_parser = { path = "lib/ram_text_parser" }
