@@ -1,4 +1,9 @@
 use super::Deserializer;
+lazy_static!{
+    static ref COND_JMP_PARSER: Regex = Regex::new(r"IF\s+[cC]\(0\)\s*(<|>|=|>=|<=)\s*([0-9])\s*THEN\s*GOTO\s*([0-9]*)")
+        .expect("A valid regex");
+}
+
 macro_rules! gen_single_arg_instr {
     ($instr:ident, $argtype:ident, $tkarr:expr, $line:expr) => {
         $instr::new(
