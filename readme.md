@@ -67,6 +67,13 @@ even if it's not used/empty.
     IF c(0) >  0   THEN    GOTO         15
     ```
 
+## Limitations
+- The maximum number of registers is 1024 by default.
+    - You can change this in `lib/ram_simulator/state.rs`.
+    - It still can't be more than `usize::MAX` though.
+- The values of the registers are unsigned 128-bit integers (`u128`).
+    - You can change this in `lib/ram_simulator/state.rs`.
+
 ## Usage
 
 ### Building from source
