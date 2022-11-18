@@ -7,3 +7,15 @@ edition = "2021"
 
 [dependencies]
 ram_simulator = { path = "lib/ram_simulator" }
+
+[[bin]]
+name = "example1"
+path = "src/examples/example1.rs"
+
+[[bin]]
+name = "example2"
+path = "src/examples/example2.rs"
+
+[[bin]]
+name = "example3"
+path = "src/examples/example3.rs"
