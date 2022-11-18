@@ -3,6 +3,7 @@ use instruction::InstructionVec;
 pub mod state;
 pub mod comparison;
 pub mod instruction;
+pub mod text;
 
 /// The machine itself
 pub struct RegisterMachine {
