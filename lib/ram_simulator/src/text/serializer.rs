@@ -12,4 +12,10 @@ impl Serializer {
 
         res
     }
+
+    pub fn dump(machine: RegisterMachine) {
+        for inst in machine.program.instructions {
+            println!("{}", inst.to_string().as_str());
+        }
+    }
 }
