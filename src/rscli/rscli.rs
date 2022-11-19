@@ -1,7 +1,9 @@
 use std::env::args;
+use std::io::Write;
 use std::path::Path;
 use std::process::exit;
 
+use text::Serializable;
 use ram_simulator::*;
 
 fn main() {
@@ -21,6 +23,18 @@ fn main() {
 
     match argv[1].chars().nth(0).expect("A valid argument") {
         'c' => another_ram.run(),
+        's' => {
+            while another_ram.has_not_ended() {
+                // Wait for enter
+                std::io::stdin().read_line(&mut String::new()).unwrap();
+                // Run step
+                match another_ram.step() {
+                    Ok(s) => { s.dump() },
+                    Err(u) => { println!("{}", u) }
+                }
+                std::io::stdout().flush().unwrap();
+            }
+        },
         _ => panic!("Unknown argument {}", &argv[1])
     }
 
