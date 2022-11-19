@@ -5,10 +5,10 @@
 use std::path::Path;
 
 use ram_simulator::*;
-use text::Deserializer;
+use text::deserializer;
 
 fn main() {
-    let mut another_ram = Deserializer::parse_file(Path::new("src/examples/example3.s").to_path_buf())
+    let mut another_ram = deserializer::parse_file(Path::new("src/examples/example3.s").to_path_buf())
         .expect("File should contain a valid assembly program");
     another_ram.run();
 
