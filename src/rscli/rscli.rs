@@ -18,7 +18,7 @@ fn main() {
 
     println!("Running \x1b[35m'{}'\x1b[0m", &argv[2]);
 
-    let mut another_ram = text::Deserializer::parse_file(Path::new(&argv[2]).to_path_buf())
+    let mut another_ram = text::deserializer::parse_file(Path::new(&argv[2]).to_path_buf())
         .expect("File should contain a valid assembly program");
 
     match argv[1].chars().nth(0).expect("A valid argument") {
