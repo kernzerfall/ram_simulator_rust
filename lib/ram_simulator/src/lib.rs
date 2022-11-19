@@ -1,4 +1,5 @@
 use instruction::InstructionVec;
+use state::State;
 
 pub mod state;
 pub mod comparison;
