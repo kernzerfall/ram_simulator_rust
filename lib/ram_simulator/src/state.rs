@@ -1,3 +1,5 @@
+use crate::text::Serializable;
+
 /// Keeps track of the RAM's current state.
 #[derive(Debug, Clone, Copy)]
 pub struct State {
