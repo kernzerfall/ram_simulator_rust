@@ -1,6 +1,8 @@
 use instruction::InstructionVec;
 use state::State;
 
+use crate::text::Serializable;
+
 pub mod state;
 pub mod comparison;
 pub mod instruction;
