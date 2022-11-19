@@ -82,4 +82,6 @@ even if it's not used/empty.
     - Linux: `sudo install -m 755 target/release/rscli /usr/local/bin/rscli`
     - Windows: i don't know, figure it out
     - MacOS: ¯\\\_(ツ)\_/¯
-3. Execute a program via `rscli /path/to/program.s`.
+3. Execute a program
+    - Continuous mode: `rscli c /path/to/program.s`
+    - Step-by-step mode: `rscli s /path/to/program.s`
