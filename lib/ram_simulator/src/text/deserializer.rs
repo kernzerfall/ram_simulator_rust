@@ -25,11 +25,7 @@ macro_rules! gen_single_arg_instr {
     };
 }
 
-
-pub fn parse_file(path: PathBuf) -> std::io::Result<RegisterMachine> {
-    let file = File::open(path)?;
-    let br = BufReader::new(file);
-
+pub fn parse_buf<R>(br: BufReader<R>) -> Result<RegisterMachine, String> where R: std::io::Read {
     let mut isv = InstructionVec::new();
     let mut initial_state = Vec::new();
 
@@ -166,4 +162,16 @@ pub fn parse_file(path: PathBuf) -> std::io::Result<RegisterMachine> {
     let mut res = RegisterMachine::new(isv);
     res.push_vec(initial_state);
     Ok(res)
+}
+
+pub fn parse_file(path: PathBuf) -> Result<RegisterMachine, String> {
+    match File::open(path) {
+        Ok(f) => {
+            let br = BufReader::new(f);
+            parse_buf(br)
+        },
+        Err(u) => {
+            Err(u.to_string())
+        }
+    }
 }
