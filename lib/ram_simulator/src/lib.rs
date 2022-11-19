@@ -73,7 +73,6 @@ impl RegisterMachine {
         }
 
         let pc = self.machine_state.get_pc();
-        print!("Step {:2} -- PC: {:2}, ", self.machine_state.get_steps(), pc + 1);
         self.program.exec_instruction(pc, &mut self.machine_state);
         self.machine_state.inc_steps();
             
