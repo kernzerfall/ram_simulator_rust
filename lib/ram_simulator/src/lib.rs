@@ -78,4 +78,9 @@ impl RegisterMachine {
             
         Ok(self.machine_state)
     }
+
+    /// Returns whether the internal state of the machine has reached an END instruction
+    pub fn has_not_ended(&self) -> bool {
+        self.machine_state.is_running() || self.machine_state.get_steps() == 0 
+    }
 }
