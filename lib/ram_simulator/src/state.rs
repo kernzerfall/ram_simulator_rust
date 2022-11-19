@@ -1,5 +1,5 @@
 /// Keeps track of the RAM's current state.
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct State {
     /// `Program Counter`: the offset of the next instruction to be executed
     pc: usize,
