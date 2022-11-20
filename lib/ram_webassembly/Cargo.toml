@@ -1,0 +1,15 @@
+[package]
+name = "ram_webassembly"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ram_simulator = { path = "../ram_simulator" }
+wasm-bindgen = "0.2"
+
+[lib]
+name = "rswasm"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
