@@ -25,6 +25,14 @@ impl RegisterMachine {
         }
     }
 
+    /// Creates a new empty RAM
+    pub fn new_empty() -> RegisterMachine {
+        RegisterMachine {
+            machine_state: state::State::initial(),
+            program: InstructionVec { instructions: Vec::new() },
+        }
+    }
+
     /// Resets the state of the RAM
     pub fn reset(&mut self) {
         self.machine_state.reset();
