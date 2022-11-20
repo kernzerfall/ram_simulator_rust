@@ -6,7 +6,6 @@ use ram_simulator::*;
 #[wasm_bindgen]
 extern {
     fn ram_post_res(r: &str);
-    fn alert(r: &str);
 }
 
 #[no_mangle]
@@ -19,12 +18,6 @@ pub fn run_machine(program: &str) {
 
     let bw = BufWriter::new(WASMCommunicator{});
     another_ram.run(bw);
-
-    alert("machine ran");
-
-    // let ser = Serializer::to_string(another_ram);
-    // Serializer::dump(another_ram);
-    // Serializer::dump(ram);
 }
 
 struct WASMCommunicator {
