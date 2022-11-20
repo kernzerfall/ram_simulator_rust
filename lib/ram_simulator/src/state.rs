@@ -1,5 +1,7 @@
+use crate::text::Serializable;
+
 /// Keeps track of the RAM's current state.
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct State {
     /// `Program Counter`: the offset of the next instruction to be executed
     pc: usize,
@@ -112,5 +114,40 @@ impl State {
         self.highest_register = 0;
         self.running = false;
         self.steps = 0;
+    }
+}
+
+/// Implement Serialization funcs for state objects
+impl Serializable for State {
+    fn to_string(&self) -> String {
+        let mut res = String::new();
+        res.push_str(
+            // The state we get has already has its step/pc incremented internally
+            format!("Step {:2} -- PC: {:2}", self.steps-1, self.pc-1).as_str()
+        );
+
+        for rn in 0..self.highest_register+1 {
+            res.push_str(
+                format!("r{}: {}", rn, self.registers[rn]).as_str()
+            );
+
+            if rn != self.highest_register+1 {
+                res.push_str(", ");
+            } else {
+                res.push_str("\n");
+            }
+        }
+
+        res
+    }
+
+    fn dump(&self) {
+        print!("Step {:2} -- PC: {:2}: ", self.steps-1, self.pc);
+
+        for rn in 0..self.highest_register+1 {
+            print!("r{}: {}, ", rn, self.registers[rn])
+        }
+
+        print!("\x08\x08\x20\x20");
     }
 }

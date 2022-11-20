@@ -1,4 +1,7 @@
 use instruction::InstructionVec;
+use state::State;
+
+use crate::text::Serializable;
 
 pub mod state;
 pub mod comparison;
@@ -50,14 +53,34 @@ impl RegisterMachine {
         // Let the machine run
         while self.machine_state.is_running() {
             let pc = self.machine_state.get_pc();
-
-            print!("Step {:2} -- PC: {:2}, ", self.machine_state.get_steps(), pc + 1);
             
             self.program.exec_instruction(pc, &mut self.machine_state);
             self.machine_state.inc_steps();
             
-            self.machine_state.print_registers();
+            self.machine_state.dump();
             println!();
         }
     } 
+
+    /// Runs the machine for a single step
+    pub fn step(&mut self) -> Result<State, &str> {
+        if !self.machine_state.is_running() && self.machine_state.get_steps() == 0 {
+            self.machine_state.start();
+        }
+
+        if !self.machine_state.is_running() && self.machine_state.get_acc() != 0 {
+            return Err("The machine has reached an END instruction")
+        }
+
+        let pc = self.machine_state.get_pc();
+        self.program.exec_instruction(pc, &mut self.machine_state);
+        self.machine_state.inc_steps();
+            
+        Ok(self.machine_state)
+    }
+
+    /// Returns whether the internal state of the machine has reached an END instruction
+    pub fn has_not_ended(&self) -> bool {
+        self.machine_state.is_running() || self.machine_state.get_steps() == 0 
+    }
 }

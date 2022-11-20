@@ -1,8 +1,6 @@
-mod serializer;
-mod deserializer;
+pub mod deserializer;
 
-pub struct Serializer {
-}
-
-pub struct Deserializer {
+pub trait Serializable {
+    fn to_string(&self) -> String;
+    fn dump(&self);
 }

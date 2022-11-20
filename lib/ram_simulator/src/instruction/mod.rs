@@ -1,5 +1,6 @@
 use crate::comparison::Comparison;
 use crate::state::{State};
+use crate::text::Serializable;
 
 /// Wrapper for a program (as a list of instructions)
 pub struct InstructionVec {
@@ -16,6 +17,36 @@ pub trait Instruction: StringRepr {
 pub trait StringRepr {
     fn command_name(&self) -> String;
     fn to_string(&self) -> String;
+}
+
+/// Serialization functions for Instructions
+impl <T> Serializable for T where T: Instruction {
+    fn to_string(&self) -> String {
+        self.to_string()
+    }
+
+    fn dump(&self) {
+        println!("{}", self.to_string())
+    }
+}
+
+/// Serialization functions for Instruction Vector Wrappers
+impl Serializable for InstructionVec {
+    fn to_string(&self) -> String {
+        let mut res = String::new();
+        for inst in self.instructions.iter() {
+            res.push_str(inst.to_string().as_str());
+            res.push('\n');
+        }
+
+        res
+    }
+
+    fn dump(&self) {
+        for inst in self.instructions.iter() {
+           println!("{}", inst.to_string().as_str());
+        }
+    }
 }
 
 /// Automatically generates single operand instructions
