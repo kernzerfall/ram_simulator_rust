@@ -68,16 +68,27 @@ even if it's not used/empty.
     ```
 
 ## Limitations
+
+### General
 - The maximum number of registers is 1024 by default.
     - You can change this in `lib/ram_simulator/state.rs`.
     - It still can't be more than `usize::MAX` though.
 - The values of the registers are unsigned 128-bit integers (`u128`).
     - You can change this in `lib/ram_simulator/state.rs`.
+    
+### WebAssembly Interface
+- Step-by-step execution is not implemented yet
+- Running machines cannot be interrupted. If you have an endless loop in your code, the simulation 
+    *will crash your browser tab*.
+- Specific errors on which the library panics cannot be shown on the page via javascript. There is 
+    currently only one generic error.
 
 ## Usage
 
-### Building from source
-1. Build the project with `cargo build --release`. The binary will be in `target/release/rscli`.
+### Binaries
+1. Get the rscli binary
+    - Build the project with `cargo build --release`. The binary will be in `target/release/rscli`, or
+    - Grab the latest release
 2. (optional) Install the binary
     - Linux: `sudo install -m 755 target/release/rscli /usr/local/bin/rscli`
     - Windows: i don't know, figure it out
@@ -85,6 +96,12 @@ even if it's not used/empty.
 3. Execute a program
     - Continuous mode: `rscli c /path/to/program.s`
     - Step-by-step mode: `rscli s /path/to/program.s`
+
+### WebAssembly Interface
+- See [georgar.de/projects/rswasm](https://georgar.de/projects/rswasm)
+
+**Note**: The WASM interface is not fully-featured yet, see [Limitations](readme.md#Limitations).
+   
     
 ## License
 The project consists of the `ram_simulator` library, the `rscli` command line interface, and the
