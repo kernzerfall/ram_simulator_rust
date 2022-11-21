@@ -69,7 +69,7 @@ even if it's not used/empty.
 
 ## Limitations
 
-### General
+### CLI
 - The maximum number of registers is 1024 by default.
     - You can change this in `lib/ram_simulator/state.rs`.
     - It still can't be more than `usize::MAX` though.
