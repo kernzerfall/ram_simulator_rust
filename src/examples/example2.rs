@@ -1,3 +1,5 @@
+use std::io::BufWriter;
+
 use ram_simulator::*;
 use ram_simulator::instruction::*;
 use comparison::Comparison;
@@ -25,7 +27,9 @@ fn main() {
         End::new()
     );
 
+    let bw = BufWriter::new(std::io::stdout());
+
     let mut ram = RegisterMachine::new(isl);
     ram.push_vec(vec![2,3]);
-    ram.run();
+    ram.run(bw);
 }

@@ -1,3 +1,5 @@
+use std::io::{BufWriter, Write};
+
 use instruction::InstructionVec;
 use state::State;
 
@@ -23,6 +25,14 @@ impl RegisterMachine {
         }
     }
 
+    /// Creates a new empty RAM
+    pub fn new_empty() -> RegisterMachine {
+        RegisterMachine {
+            machine_state: state::State::initial(),
+            program: InstructionVec { instructions: Vec::new() },
+        }
+    }
+
     /// Resets the state of the RAM
     pub fn reset(&mut self) {
         self.machine_state.reset();
@@ -42,13 +52,15 @@ impl RegisterMachine {
     }
 
     /// Runs the machine (until it internally reaches `END`) and outputs register values on each step
-    pub fn run(&mut self) {
+    pub fn run<T>(&mut self, mut output: BufWriter<T>) where T: std::io::Write {
         self.machine_state.start();
 
         // Output initial config in yellow
-        print!("\x1b[33mInitial Configuration -- ");
-        self.machine_state.print_registers();
-        println!("\x1b[0m");
+        output.write(b"\x1b[33mInitial Configuration -- ")
+            .expect("Writable Buffer");
+        self.machine_state.print_registers(&mut output);
+        output.write(b"\x1b[0m\n")
+            .expect("Writable Buffer");
 
         // Let the machine run
         while self.machine_state.is_running() {
@@ -57,8 +69,10 @@ impl RegisterMachine {
             self.program.exec_instruction(pc, &mut self.machine_state);
             self.machine_state.inc_steps();
             
-            self.machine_state.dump();
-            println!();
+            output.write(self.machine_state.to_string().as_bytes())
+                .expect("Writable Buffer");
+            output.write(b"\n")
+                .expect("Writable Buffer");
         }
     } 
 

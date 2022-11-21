@@ -1,3 +1,5 @@
+use std::io::BufWriter;
+
 /**!
  * An example of a hardcoded program.
  * This program computes `ceil(ld(c(1))`
@@ -23,7 +25,9 @@ fn main() {
         End::new()
     );
 
+    let bw = BufWriter::new(std::io::stdout());
+
     let mut ram = RegisterMachine::new(isl);
     ram.push_vec(vec![2,3]);
-    ram.run();
+    ram.run(bw);
 }

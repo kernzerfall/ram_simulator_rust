@@ -1,5 +1,5 @@
 use std::env::args;
-use std::io::Write;
+use std::io::{Write, BufWriter};
 use std::path::Path;
 use std::process::exit;
 
@@ -22,7 +22,10 @@ fn main() {
         .expect("File should contain a valid assembly program");
 
     match argv[1].chars().nth(0).expect("A valid argument") {
-        'c' => another_ram.run(),
+        'c' => {
+            let bw = BufWriter::new(std::io::stdout());
+            another_ram.run(bw)
+        },
         's' => {
             while another_ram.has_not_ended() {
                 // Wait for enter
