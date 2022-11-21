@@ -87,6 +87,8 @@ even if it's not used/empty.
     - Step-by-step mode: `rscli s /path/to/program.s`
     
 ## License
-The project consists of the `ram_simulator` library, and the `rscli` command line interface.
+The project consists of the `ram_simulator` library, the `rscli` command line interface, and the
+`ram_webassembly` WebAssembly Interface (as a library).
 - `rscli` is licensed under [GNU GPL v3](LICENSE.md)
 - `ram_simulator` is licensed under [GNU LGPL v3](lib/ram_simulator/LICENSE.md)
+- `ram_webassembly` is licensed under [GNU LGPL v3](lib/ram_webassembly/LICENSE.md)
