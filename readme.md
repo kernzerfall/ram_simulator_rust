@@ -13,13 +13,13 @@ So, basically, I wanted to learn Rust and this is what came out of it.
 simulator written in Rust. It supports hardcoded programs and executing files via its cli. By 
 default, it outputs all registers (up to the highest that was used) after executing every instruction.
 
-The instruction set is the one described in `lib/ram_simulator/src/instruction/mod.rs`. (Basically
+The instruction set is the one described in [lib/ram_simulator/src/instruction/mod.rs](lib/ram_simulator/src/instruction/mod.rs). (Basically
 the one from my 
 [Computability and Complexity](https://online.rwth-aachen.de/RWTHonline/pl/ui/$ctx/WBMODHB.wbShowMHBReadOnly?pKnotenNr=335994&pOrgNr=14194) course with one minor addition.)
 
 ## Program syntax
 
-For the instruction set, see `lib/ram_simulator/src/instruction/mod.rs`.
+For the instruction set, see [lib/ram_simulator/src/instruction/mod.rs](lib/ram_simulator/src/instruction/mod.rs).
 
 Here's an example program that computes `floor(ld(c(1)))` (the floor of the log_2 of the
 value that is in the 1st register):
@@ -71,10 +71,10 @@ even if it's not used/empty.
 
 ### Generic
 - The maximum number of registers is 1024 by default.
-    - You can change this in `lib/ram_simulator/state.rs`.
+    - You can change this in [lib/ram_simulator/src/state.rs](lib/ram_simulator/src/state.rs#L11).
     - It still can't be more than `usize::MAX` though.
 - The values of the registers are unsigned 128-bit integers (`u128`).
-    - You can change this in `lib/ram_simulator/state.rs`.
+    - You can change this in [lib/ram_simulator/src/state.rs](lib/ram_simulator/src/state.rs#L11).
     
 ### WebAssembly Interface
 - Step-by-step execution is not implemented yet
