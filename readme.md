@@ -69,7 +69,7 @@ even if it's not used/empty.
 
 ## Limitations
 
-### CLI
+### Generic
 - The maximum number of registers is 1024 by default.
     - You can change this in `lib/ram_simulator/state.rs`.
     - It still can't be more than `usize::MAX` though.
@@ -85,7 +85,7 @@ even if it's not used/empty.
 
 ## Usage
 
-### Binaries
+### CLI
 1. Get the rscli binary
     - Build the project with `cargo build --release`. The binary will be in `target/release/rscli`, or
     - Grab the latest release
