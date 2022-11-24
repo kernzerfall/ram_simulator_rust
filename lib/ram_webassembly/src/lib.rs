@@ -5,7 +5,7 @@ use ram_simulator::*;
 
 #[wasm_bindgen]
 extern {
-    fn ram_post_res(r: &str);
+    fn ram_post_res(r: &str, t: &str);
 }
 
 #[no_mangle]
