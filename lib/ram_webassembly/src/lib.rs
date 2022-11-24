@@ -1,4 +1,6 @@
-use std::io::{BufReader, BufWriter};
+use std::io::{BufReader};
+use state::State;
+use text::{deserializer, Serializable};
 
 use wasm_bindgen::prelude::*;
 use ram_simulator::*;
@@ -12,27 +14,61 @@ extern {
 
 #[no_mangle]
 #[wasm_bindgen]
-pub fn run_machine(program: &str) {
+pub fn run_machine(program: &str, max_depth: usize) {
     let br = BufReader::new(program.as_bytes());
+    let mut another_ram: RegisterMachine;
+    let mut state: ram_simulator::state::State = State::initial();
 
-    let mut another_ram = text::deserializer::parse_buf(br)
-        .expect("File should contain a valid assembly program");
-
-    let bw = BufWriter::new(WASMCommunicator{});
-    another_ram.run(bw);
-}
-
-struct WASMCommunicator {
-
-}
-
-impl std::io::Write for WASMCommunicator {
-    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
-        ram_post_res(core::str::from_utf8(buf).expect("A valid string"));
-        Ok(buf.len())
+    let from_state = &get_gl_state();
+    
+    if from_state.len() > 7 {
+        ram_post_res(
+            &format!("Continuing from state {}", from_state),
+            "ramStateInfo"
+        );
+        match State::from_wasm_comm_str(from_state) {
+            Ok(s) => {
+                state = s
+            },
+            Err(u) => {
+                ram_post_res(
+                    &format!("State was neither empty nor valid, err: {}. Starting from initial.", u),
+                    "ramStateInfo"
+                );
+            }
+        }
     }
+    match deserializer::parse_buf(br) {
+        Ok(m) => {
+                another_ram = m;
+                if state.get_steps() > 0 {
+                    another_ram.set_state(state);
+                }
 
-    fn flush(&mut self) -> std::io::Result<()> {
-        Ok(())
+                for _ in 0..max_depth {
+                    match &mut another_ram.step() {
+                        Ok(res_st) => {
+                            if !another_ram.has_not_ended() {
+                                ram_post_res(&"Machine halted.", "ramGoodResult");
+                                break;
+                            }
+
+                            ram_post_res(&res_st.to_string(), "");
+                    },
+                        Err(m_err) => {
+                            ram_post_res(m_err, "ramBadResult");
+                            ram_update_gl_state(&another_ram.get_state().to_wasm_comm_str());
+                            return;
+                        }
+                    }
+                }
+                ram_update_gl_state(&another_ram.get_state().to_wasm_comm_str());
+                if another_ram.has_not_ended() {
+                    ram_post_res("The machine hasn't halted yet.", "ramStateInfo");
+                }
+        },
+        Err(e) => {
+            ram_post_res(&e, "ramBadResult");
+        }
     }
 }
