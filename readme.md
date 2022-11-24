@@ -77,10 +77,11 @@ even if it's not used/empty.
     - You can change this in [lib/ram_simulator/src/state.rs](lib/ram_simulator/src/state.rs#L11).
     
 ### WebAssembly Interface
-- Step-by-step execution is not implemented yet
-- Running machines cannot be interrupted. If you have an endless loop in your code, the simulation 
-    *will crash your browser tab*.
-- Specific errors on which the library panics cannot be shown on the page via javascript. There is 
+- ~~Step-by-step execution is not implemented yet~~ Done.
+- ~~Running machines cannot be interrupted.~~ Done. (via bounded execution)
+- If you have an endless loop in your code, the simulation __may__ *crash your browser tab*,
+    if you set max depth too high.
+- Specific errors on which the ~~library~~ parser panics cannot be shown on the page via javascript. There is 
     currently only one generic error.
 
 ## Usage
