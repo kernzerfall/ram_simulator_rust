@@ -124,6 +124,21 @@ impl State {
         self.running = false;
         self.steps = 0;
     }
+
+    /// Overwrites the machine's state
+    pub fn overwrite(&mut self, new: &State) {
+        self.reset();
+
+
+        self.pc = new.pc;
+        self.highest_register = new.highest_register;
+        self.running = new.running;
+        self.steps = new.steps;
+        
+        for i in 0..self.highest_register+1 {
+            self.registers[i] = new.registers[i];
+        }
+    }
 }
 
 /// Implement Serialization funcs for state objects
