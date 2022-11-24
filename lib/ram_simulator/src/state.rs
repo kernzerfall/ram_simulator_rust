@@ -20,7 +20,7 @@ pub struct State {
 /// Methods for the State struct.
 impl State {
     /// Creates an empty (new) state.
-    pub fn initial() -> State {
+    pub const fn initial() -> State {
         State {
             pc: 0,
             registers: [0; 1024],
@@ -124,6 +124,21 @@ impl State {
         self.running = false;
         self.steps = 0;
     }
+
+    /// Overwrites the machine's state
+    pub fn overwrite(&mut self, new: &State) {
+        self.reset();
+
+
+        self.pc = new.pc;
+        self.highest_register = new.highest_register;
+        self.running = new.running;
+        self.steps = new.steps;
+        
+        for i in 0..self.highest_register+1 {
+            self.registers[i] = new.registers[i];
+        }
+    }
 }
 
 /// Implement Serialization funcs for state objects
@@ -156,5 +171,117 @@ impl Serializable for State {
         }
 
         print!("\x08\x08\x20\x20");
+    }
+}
+
+impl State {
+    const SEPARATOR: char = '<';
+    pub fn to_wasm_comm_str(&self) -> String {
+        let mut res = String::new();
+        res.push(match self.running {
+            true => 'r',
+            false => 's'
+        });
+        res.push(Self::SEPARATOR);
+
+        res.push_str(&self.steps.to_string());
+        res.push(Self::SEPARATOR);
+
+        res.push_str(&self.pc.to_string());
+        res.push(Self::SEPARATOR);
+
+        res.push_str(&self.highest_register.to_string());
+        res.push(Self::SEPARATOR);
+
+        for i in 0..self.highest_register+1 {
+            res.push_str(&self.registers[i].to_string());
+            
+            if i < self.highest_register {
+                res.push(Self::SEPARATOR);
+            }
+        }
+
+        res
+    }
+
+    pub fn from_wasm_comm_str(istr:  &str) -> Result<State, String> {
+        let mut res = State::initial();
+
+        let mut tokens = istr.split(Self::SEPARATOR);
+
+        let mut next_token = tokens.next();
+
+        if next_token.is_none() {
+            return Err("Expected a running/stopped at pos 0".to_string());
+        } else {
+            match next_token.unwrap() {
+                "r" => res.running = true,
+                "s" => res.running = false,
+                _ => return Err(
+                    format!("r? {}", next_token.unwrap())
+                )
+            }
+        }
+
+        next_token = tokens.next();
+        if next_token.is_none() {
+            return Err("Expected steps at pos 1".to_string());
+        } else {
+            match next_token.unwrap().parse::<usize>() {
+                Ok(steps) => res.steps = steps,
+                Err(pie) => {
+                    return Err(
+                        format!("step number {} -- {}", next_token.unwrap(), pie.to_string())
+                    );
+                }
+            }
+        }
+        
+        next_token = tokens.next();
+        if next_token.is_none() {
+            return Err("Expected a PC at pos 2".to_string());
+        } else {
+            match next_token.unwrap().parse::<usize>() {
+                Ok(pc) => res.set_pc(pc),
+                Err(pie) => {
+                    return Err(
+                        format!("pc {}: {}", next_token.unwrap(), pie.to_string())
+                    );
+                }
+            }
+        }
+
+
+        next_token = tokens.next();
+        if next_token.is_none() {
+            return Err("Expected Highest Register at pos 3".to_string());
+        } else {
+            match next_token.unwrap().parse::<usize>() {
+                Ok(highest) => res.highest_register = highest,
+                Err(pie) => {
+                    return Err(
+                        format!("highest register {} - {}", next_token.unwrap(), pie.to_string())
+                    );
+                }
+            }
+        }
+
+        for i in 0..res.highest_register+1 {
+            next_token = tokens.next();
+            if next_token.is_none() {
+                return Err("Expected more register values".to_string());
+            } else {
+                match next_token.unwrap().parse::<u128>() {
+                    Ok(rv) => res.registers[i] = rv,
+                    Err(pie) => {
+                        return Err(
+                            format!("register value {}: {} -- {}", i, next_token.unwrap(), pie.to_string())
+                        );
+                    }
+                }
+            }
+        }
+
+        Ok(res)
     }
 }

@@ -38,18 +38,26 @@ pub fn parse_buf<R>(br: BufReader<R>) -> Result<RegisterMachine, String> where R
         let mut tokens = uw.split_whitespace();
         
         
-        let instruction = tokens.next()
-            .expect(format!("Expected an instruction on line {}", i).as_str())
-            .trim();
+        let next_token = tokens.next();
+        if next_token.is_none() {
+            return Err(format!("Expected an instruction on line {}", i));
+        }
+
+        let instruction = next_token.unwrap().trim();
 
         match instruction.trim().to_uppercase().as_str() {
             "INIT" => if i == 0 {
                 init_cmd = true;
                 for tkn in tokens {
-                    initial_state.push(tkn.trim().parse::<u128>().expect("Init arguments must be numbers"))
+                    let try_parse = tkn.trim().parse::<u128>();
+                    if try_parse.is_err() {
+                        return Err("INIT args must be numbers".to_string());
+                    }
+
+                    initial_state.push(try_parse.unwrap());
                 }
             } else {
-                panic!("INIT called inside program")
+                return Err("INIT called inside program".to_string())
             },
 
             "LOAD" => isv.push_instruction(

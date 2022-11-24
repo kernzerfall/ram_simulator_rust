@@ -26,7 +26,7 @@ impl RegisterMachine {
     }
 
     /// Creates a new empty RAM
-    pub fn new_empty() -> RegisterMachine {
+    pub const fn new_empty() -> RegisterMachine {
         RegisterMachine {
             machine_state: state::State::initial(),
             program: InstructionVec { instructions: Vec::new() },
@@ -96,5 +96,15 @@ impl RegisterMachine {
     /// Returns whether the internal state of the machine has reached an END instruction
     pub fn has_not_ended(&self) -> bool {
         self.machine_state.is_running() || self.machine_state.get_steps() == 0 
+    }
+
+    /// Sets the internal state of the machine
+    pub fn set_state(&mut self, new: State) {
+        self.machine_state.overwrite(&new);
+    }
+
+    /// Gets the internal state of the machine
+    pub fn get_state(&self) -> &State {
+        &self.machine_state
     }
 }
