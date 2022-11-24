@@ -5,6 +5,9 @@ use text::{deserializer, Serializable};
 use wasm_bindgen::prelude::*;
 use ram_simulator::*;
 
+static mut RAM: RegisterMachine = RegisterMachine::new_empty();
+static mut INIT_STATE: State = State::initial();
+
 #[wasm_bindgen]
 extern {
     fn ram_post_res(r: &str, t: &str);
@@ -14,14 +17,30 @@ extern {
 
 #[no_mangle]
 #[wasm_bindgen]
-pub fn run_machine(program: &str, max_depth: usize) {
+pub fn init_machine(program: &str) {
     let br = BufReader::new(program.as_bytes());
-    let mut another_ram: RegisterMachine;
-    let mut state: ram_simulator::state::State = State::initial();
 
-    let from_state = &get_gl_state();
-    
-    if from_state.len() > 7 {
+    match deserializer::parse_buf(br) {
+        Ok(m) => unsafe {
+                RAM = m;
+                INIT_STATE = RAM.get_state().clone();
+        },
+        Err(e) => {
+            ram_post_res(&e, "ramBadResult");
+        }
+    }
+}
+
+#[no_mangle]
+#[wasm_bindgen]
+pub fn reset_machine() {
+    unsafe {
+        RAM.set_state(INIT_STATE);
+    }
+}
+
+#[no_mangle]
+#[wasm_bindgen]
         ram_post_res(
             &format!("Continuing from state {}", from_state),
             "ramStateInfo"
