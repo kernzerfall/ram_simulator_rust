@@ -11,8 +11,6 @@ static mut INIT_STATE: State = State::initial();
 #[wasm_bindgen]
 extern {
     fn ram_post_res(r: &str, t: &str);
-    fn ram_update_gl_state(r: &str);
-    fn get_gl_state() -> String;
 }
 
 #[no_mangle]
