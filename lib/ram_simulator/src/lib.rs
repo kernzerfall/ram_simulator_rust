@@ -104,7 +104,7 @@ impl RegisterMachine {
     }
 
     /// Gets the internal state of the machine
-    pub fn get_state(&self) -> State {
-        self.machine_state
+    pub fn get_state(&self) -> &State {
+        &self.machine_state
     }
 }
