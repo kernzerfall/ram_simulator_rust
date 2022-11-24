@@ -20,7 +20,7 @@ pub struct State {
 /// Methods for the State struct.
 impl State {
     /// Creates an empty (new) state.
-    pub fn initial() -> State {
+    pub const fn initial() -> State {
         State {
             pc: 0,
             registers: [0; 1024],

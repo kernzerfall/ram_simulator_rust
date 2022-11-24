@@ -26,7 +26,7 @@ impl RegisterMachine {
     }
 
     /// Creates a new empty RAM
-    pub fn new_empty() -> RegisterMachine {
+    pub const fn new_empty() -> RegisterMachine {
         RegisterMachine {
             machine_state: state::State::initial(),
             program: InstructionVec { instructions: Vec::new() },
