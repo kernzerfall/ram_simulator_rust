@@ -1,4 +1,4 @@
-use std::io::{BufWriter, Write};
+use std::io::Write;
 
 use crate::text::Serializable;
 
@@ -102,18 +102,28 @@ impl State {
     }
 
     /// Prints registers up to the highest register used
-    pub fn print_registers<T>(&self, output: &mut BufWriter<T>) where T: std::io::Write {
+    pub fn print_registers<T: Write>(&self, output: &mut T) -> Result<(), String> {
         for i in 0..self.highest_register+1 {
-            output.write(
+            match output.write(
                 format!("r{:}: {}", i, self.registers[i]).as_bytes()
-            ).expect("Writable buffer");
+            ) {
+                Ok(_) => {},
+                Err(u) => return Err(
+                    format!("Could not write to buffer: {}", u.to_string())
+                )
+            };
 
             if i != self.highest_register {
-                output.write(b", ")
-                    .expect("Writable buffer");
+                match output.write(b", ") {
+                    Ok(_) => {},
+                    Err(u) => return Err(
+                        format!("Could not write to buffer: {}", u.to_string())
+                    )
+                };
             }
         }
-        print!("\x08\x08\x20");
+
+        Ok(())
     }
 
     /// Resets the machine's state to the initial one

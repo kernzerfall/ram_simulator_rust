@@ -1,4 +1,4 @@
-use std::io::{BufWriter, Write};
+use std::io::Write;
 
 use instruction::InstructionVec;
 use state::State;
@@ -52,15 +52,25 @@ impl RegisterMachine {
     }
 
     /// Runs the machine (until it internally reaches `END`) and outputs register values on each step
-    pub fn run<T>(&mut self, mut output: BufWriter<T>) where T: std::io::Write {
+    /// Returns errors if any
+    pub fn run<T: Write>(&mut self, mut output: T) -> Option<String> {
         self.machine_state.start();
 
         // Output initial config in yellow
-        output.write(b"\x1b[33mInitial Configuration -- ")
-            .expect("Writable Buffer");
-        self.machine_state.print_registers(&mut output);
-        output.write(b"\x1b[0m\n")
-            .expect("Writable Buffer");
+        match output.write(b"\x1b[33mInitial Configuration -- ") {
+            Ok(_) => {},
+            Err(u) => return Some(u.to_string()),
+        }
+
+        match self.machine_state.print_registers(&mut output) {
+            Ok(_) => {},
+            Err(u) => return Some(u),
+        };
+
+        match output.write(b"\x1b[0m\n") {
+            Ok(_) => {},
+            Err(u) => return Some(u.to_string())
+        };
 
         // Let the machine run
         while self.machine_state.is_running() {
@@ -69,11 +79,17 @@ impl RegisterMachine {
             self.program.exec_instruction(pc, &mut self.machine_state);
             self.machine_state.inc_steps();
             
-            output.write(self.machine_state.to_string().as_bytes())
-                .expect("Writable Buffer");
-            output.write(b"\n")
-                .expect("Writable Buffer");
+            match output.write(self.machine_state.to_string().as_bytes()) {
+                Ok(_) => {},
+                Err(u) => return Some(u.to_string()),
+            };
+            match output.write(b"\n") {
+                Ok(_) => {},
+                Err(u) => return Some(u.to_string()),
+            };
         }
+
+        None
     } 
 
     /// Runs the machine for a single step
