@@ -1,4 +1,4 @@
-use std::io::{BufWriter, Write};
+use std::io::Write;
 
 use crate::text::Serializable;
 
@@ -102,7 +102,7 @@ impl State {
     }
 
     /// Prints registers up to the highest register used
-    pub fn print_registers<T: std::io::Write>(&self, output: &mut T) -> Result<(), String> {
+    pub fn print_registers<T: Write>(&self, output: &mut T) -> Result<(), String> {
         for i in 0..self.highest_register+1 {
             match output.write(
                 format!("r{:}: {}", i, self.registers[i]).as_bytes()
@@ -122,7 +122,7 @@ impl State {
                 };
             }
         }
-        
+
         Ok(())
     }
 
