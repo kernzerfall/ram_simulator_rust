@@ -77,12 +77,11 @@ even if it's not used/empty.
     - You can change this in [lib/ram_simulator/src/state.rs](lib/ram_simulator/src/state.rs#L11).
     
 ### WebAssembly Interface
-- ~~Step-by-step execution is not implemented yet~~ Done.
-- ~~Running machines cannot be interrupted.~~ Done. (via bounded execution)
 - If you have an endless loop in your code, the simulation __may__ *crash your browser tab*,
-    if you set max depth too high.
-- Specific errors on which the ~~library~~ parser panics cannot be shown on the page via javascript. There is 
-    currently only one generic error.
+    or make it appear unresponsive, if you set max depth too high.
+- ~~Specific errors on which the parser panics cannot be shown on the page via javascript. There is 
+    currently only one generic error.~~ Done. All parser errors now get propagated to rswasm, which
+    then shows them on the page.
 
 ## Usage
 
