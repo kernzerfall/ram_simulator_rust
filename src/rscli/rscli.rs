@@ -1,3 +1,4 @@
+use core::panic;
 use std::env::args;
 use std::io::{Write, BufWriter};
 use std::path::Path;
@@ -24,7 +25,10 @@ fn main() {
     match argv[1].chars().nth(0).expect("A valid argument") {
         'c' => {
             let bw = BufWriter::new(std::io::stdout());
-            another_ram.run(bw)
+            let res = another_ram.run(bw);
+            if res.is_some() {
+                panic!("{}", res.unwrap());
+            }
         },
         's' => {
             while another_ram.has_not_ended() {
