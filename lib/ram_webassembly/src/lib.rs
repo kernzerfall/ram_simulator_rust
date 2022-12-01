@@ -15,7 +15,7 @@ extern {
 
 #[no_mangle]
 #[wasm_bindgen]
-pub fn init_machine(program: &str) {
+pub fn init_machine(program: &str) -> bool {
     let br = BufReader::new(program.as_bytes());
 
     match deserializer::parse_buf(br) {
@@ -25,8 +25,11 @@ pub fn init_machine(program: &str) {
         },
         Err(e) => {
             ram_post_res(&e, "ramBadResult");
+            return false;
         }
     }
+
+    return true;
 }
 
 #[no_mangle]
